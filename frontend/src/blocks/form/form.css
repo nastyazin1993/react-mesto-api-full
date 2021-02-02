@@ -1,0 +1,16 @@
+@import url(./__name/form__name.css);
+@import url(./__about-name/form__about-name.css);
+@import url(./__save-button/form__save-button.css);
+@import url(./__icon/form__icon.css);
+@import url(./__container/form__container.css);
+@import url(./__title/form__title.css);
+@import url(./__name/_theme_dark/form__name_theme_dark.css);
+@import url(./__save-button/_theme_dark/form__save-button_theme_dark.css);
+@import url(./__subtitle/form__subtitle.css);
+@import url(./__login-link/form__login-link.css);
+
+.form{
+    margin: 0;
+    padding-top: 54px;
+    
+}

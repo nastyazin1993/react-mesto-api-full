@@ -1,0 +1,12 @@
+.profile__avatar-conteiner{
+    position: relative;
+    width: 100%;
+    max-width: 120px;
+}
+
+.profile__avatar-conteiner:hover .profile__avatar-overlay {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+
+  

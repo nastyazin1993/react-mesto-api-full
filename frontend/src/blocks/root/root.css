@@ -1,0 +1,7 @@
+.root {
+    min-width: 300px;
+    
+    font-family: Inter, Arial, sans-serif;
+    background: #000000;
+    color: #ffffff;
+}

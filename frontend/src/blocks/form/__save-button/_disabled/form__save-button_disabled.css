@@ -1,0 +1,12 @@
+.form__save-button_disabled{
+  cursor: default;
+  color: #C4C4C4;
+  background-color: #FFF;
+  border: 1px solid #C4C4C4;
+  
+}
+.form__save-button_disabled:hover{
+  cursor: default;
+} 
+   
+    

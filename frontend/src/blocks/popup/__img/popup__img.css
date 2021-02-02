@@ -1,0 +1,8 @@
+.popup__img{
+    height: 100%;
+    width: 100%;
+    max-width: 75vw;
+    max-height: 75vh;
+    cursor: default;
+    
+}

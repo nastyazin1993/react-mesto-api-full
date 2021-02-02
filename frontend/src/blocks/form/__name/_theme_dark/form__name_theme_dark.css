@@ -1,0 +1,8 @@
+.form__name_theme_dark {
+  border-bottom: 2px solid #cccccc;
+  background-color: #000000;
+  color: #cccccc;
+  font-size: 14px;
+  line-height: 30px;
+  margin-bottom: 30px;
+}

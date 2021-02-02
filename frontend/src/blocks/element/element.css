@@ -1,0 +1,15 @@
+@import url(./__title/element__title.css);
+@import url(./__info/element__info.css);
+@import url(./__img/element__img.css);
+@import url(./__heart/element__heart.css);
+@import url(./__delete/element__delete.css);
+@import url(./__sumLike/element__sumLike.css);
+@import url(./__delete/_hidden/element__delete_hidden.css);
+.element {
+    width: 282px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+      
+}

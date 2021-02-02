@@ -1,0 +1,15 @@
+.profile__block{
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+    align-items: center;
+    width: 80%;
+}
+@media screen and (max-width:550px){
+    .profile__block{
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+    
+    }
+}

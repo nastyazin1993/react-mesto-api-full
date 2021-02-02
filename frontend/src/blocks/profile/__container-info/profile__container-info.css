@@ -1,0 +1,12 @@
+.profile__container-info {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    padding-right: 30px;
+    align-items: center;
+}
+@media screen and (max-width: 550px){
+    .profile__container-info {
+        padding-right: 0px;
+    }
+}

@@ -1,0 +1,21 @@
+@import url(./__logo/header__logo.css);
+@import url(./__link/header__link.css);
+
+.header {
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  display: flex;
+  justify-content: space-between;
+  font-family: Inter, Arial, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  color: #ffffff;
+  text-align: right;
+}
+
+@media screen and (max-width: 550px) {
+  .header {
+    margin: 0 -20px 0;
+  }
+}
