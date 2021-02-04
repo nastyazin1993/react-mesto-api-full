@@ -14,7 +14,13 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-app.use(cors());
+const hosts = [
+  'http://localhost:3000',
+  'nastyazin1993.students.nomoredomains.work',
+  'api.nastyazin1993.students.nomoredomains.work',
+  'www.nastyazin1993.students.nomoredomains.work',
+  'www.api.nastyazin1993.students.nomoredomains.work',
+];
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
@@ -29,6 +35,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   };
   next();
 }); */
+
+app.use(cors({ origin: hosts }));
 
 app.use(auth);
 app.use(requestLogger);

@@ -1,13 +1,14 @@
-export const BASE_URL = "http://nastyazin1993.students.nomoredomains.work";
+export const BASE_URL = "https://api.nastyazin1993.students.nomoredomains.work/";
 
 export const register = (password, email) =>
-  fetch(`${BASE_URL}/signup`, {
+  fetch(`${BASE_URL}/sign-up`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ password, email }),
   }).then((res) => {
+    console.log(res)
     if (res.ok) {
       return res.json();
     }

@@ -37,10 +37,12 @@ function App() {
     iconStatus: loading,
     text: "Загрузка...",
   });
+  
 
   // Проверить токен
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
+    console.log(jwt)
     if (jwt) {
       auth
         .getContent(jwt)
@@ -54,13 +56,17 @@ function App() {
   }, [history]);
 
   React.useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
+    const jwt = localStorage.getItem("jwt");
+    console.log(jwt)
+    if (jwt) {
+    Promise.all([api.getUserInfo(jwt), api.getInitialCards(jwt)])
       .then(([res, data]) => {
         setCurrentUser(res);
         setCards(data);
       })
       .catch((err) => console.log(err));
-  }, []);
+    }
+  }, [history]);
 
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -147,8 +153,9 @@ function App() {
 
     auth
       .register(escape(password), email)
-      .then(() => {
-        console.log("register ok");
+      .then((res) => { 
+        localStorage.setItem("jwt", res.token)
+        console.log(res);
         setCodeStatusInfo({
           iconStatus: okIcon,
           text: "Вы успешно зарегистрировались!",
@@ -170,7 +177,7 @@ function App() {
 
     auth
       .authorize(escape(password), email)
-      .then((data) => {
+      .then((data) => { localStorage.setItem("jwt", data.token)
         auth
           .getContent(data)
           .then((res) => {
