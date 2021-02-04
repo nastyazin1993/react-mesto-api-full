@@ -102,8 +102,8 @@ const updateAvatar = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
-  const { email, password } = req.body;
-  return User.findUserByCredentials(email, password)
+  const { password, email } = req.body;
+  return User.findUserByCredentials(password, email)
     .then((user) => {
     // аутентификация успешна! пользователь в переменной user
     // создадим токен

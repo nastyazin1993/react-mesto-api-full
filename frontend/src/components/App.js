@@ -153,9 +153,9 @@ function App() {
 
     auth
       .register(escape(password), email)
+   
       .then((res) => { 
-        localStorage.setItem("jwt", res.token)
-        console.log(res);
+        console.log(res)
         setCodeStatusInfo({
           iconStatus: okIcon,
           text: "Вы успешно зарегистрировались!",
