@@ -18,10 +18,10 @@ const app = express();
 const hosts = [
   'http://localhost:3001',
   'http://localhost:3000',
-  'nastyazin1993.students.nomoredomains.work',
-  'api.nastyazin1993.students.nomoredomains.work',
-  'www.nastyazin1993.students.nomoredomains.work',
-  'www.api.nastyazin1993.students.nomoredomains.work',
+  'nastyagun1993.students.nomoredomains.work',
+  'api.nastyagun1993.students.nomoredomains.work',
+  'www.nastyagun1993.students.nomoredomains.work',
+  'www.api.nastyagun1993.students.nomoredomains.work',
 ];
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
