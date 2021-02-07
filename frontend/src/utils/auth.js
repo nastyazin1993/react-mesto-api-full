@@ -1,7 +1,7 @@
-export const BASE_URL = "https://api.nastyazin1993.students.nomoredomains.work/";
+export const BASE_URL = "http://localhost:3001/";
 
 export const register = (password, email) =>
-  fetch(`${BASE_URL}/signup`, {
+  fetch(`${BASE_URL}signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -19,7 +19,7 @@ export const register = (password, email) =>
 
 
 export const authorize = (password, email) =>
-  fetch(`${BASE_URL}/signin`, {
+  fetch(`${BASE_URL}signin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -34,8 +34,9 @@ export const authorize = (password, email) =>
       return Promise.reject(new Error(`Ошибка: ${res.status} ....`));
     })
     .then((data) => {
-      localStorage.setItem('token', data.token);
       console.log(data)
+      localStorage.setItem('jwt', data.token);
+      
       return data;
   })
   .catch((err) => {
@@ -51,7 +52,7 @@ export const authorize = (password, email) =>
     });*/
 
 export const getContent = (token) =>
-  fetch(`${BASE_URL}/users/me`, {
+  fetch(`${BASE_URL}users/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

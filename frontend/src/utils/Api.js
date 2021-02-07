@@ -79,7 +79,7 @@ class Api {
 }
 
 const api = new Api({
-  url: "https://api.nastyazin1993.students.nomoredomains.work/",
+  url: "http://localhost:3001/",
   headers: {
     "Content-Type": "application/json",
     authorization: `Bearer ${localStorage.getItem("jwt")}`,
