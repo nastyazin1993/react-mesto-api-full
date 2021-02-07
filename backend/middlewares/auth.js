@@ -7,7 +7,7 @@ const auth = (req, res, next) => {
   const { authorization } = req.headers;
   // if (!authorization || !authorization.startsWith('Bearer ')) {
   if (!authorization) {
-    throw new UnauthorizedError('Необходима авторизация');
+    throw new UnauthorizedError('1Необходима авторизация');
     /* return res
       .status(401)
       .send({ message: 'Необходима авторизация!!' }); */
@@ -18,7 +18,7 @@ const auth = (req, res, next) => {
   try {
     payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
   } catch (err) {
-    throw new UnauthorizedError('Необходима авторизация');
+    throw new UnauthorizedError('2Необходима авторизация');
     /* return res
       .status(401)
       .send({ message: 'Необходима авторизация' }); */
