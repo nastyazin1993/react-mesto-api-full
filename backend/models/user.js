@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 2,
     maxlength: 30,
+    unique: true,
     validate: {
       validator(email) {
         return validator.isEmail(email);
@@ -66,6 +67,7 @@ userSchema.statics.findUserByCredentials = function (password, email) {
         });
     });
 };
+
 const userModel = mongoose.model('user', userSchema);
 
 module.exports = userModel;

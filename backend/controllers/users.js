@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
@@ -20,9 +21,10 @@ const getUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  const { id } = req.params;
-
-  User.findById(id)
+  console.log(req.user);
+  const Id = mongoose.Types.ObjectId(req.params._id);
+  // const { _id } = req.params;
+  User.findById(Id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
@@ -34,7 +36,11 @@ const getUser = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  User.findById(req.user._id)
+  console.log(req.user);
+  // const { _id } = req.user;
+  const userId = mongoose.Types.ObjectId(req.user._id);
+  User.findById(userId)
+  // User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
@@ -107,10 +113,14 @@ const login = (req, res, next) => {
     .then((user) => {
     // аутентификация успешна! пользователь в переменной user
     // создадим токен
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
+      );
 
       // вернём токен
-      res.send({ token });
+      res.send({ token, user });
     })
     .catch(/* (err) => { */ () => next(new UnauthorizedError('Введены неверное имя или пароль')));
   // ошибка аутентификации

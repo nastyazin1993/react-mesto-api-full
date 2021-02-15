@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Card = require('../models/card');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
@@ -24,7 +25,7 @@ const getCards = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  Card.findByIdAndRemove(req.params.id)
+  Card.findByIdAndRemove(req.params._id)
     .then((card) => {
       if (!card) {
         throw new BadRequestError('Переданы некорректные данные');
@@ -35,9 +36,15 @@ const deleteCard = (req, res, next) => {
 };
 
 const addLikeCard = (req, res, next) => {
+  const cardId = mongoose.Types.ObjectId(req.params._id);
+  const userId = mongoose.Types.ObjectId(req.user._id);
+  console.log(req.params);
+  console.log(req.user);
+  console.log(req.owner);
   Card.findByIdAndUpdate(
-    req.params.id,
-    { $addToSet: { likes: req.user._id } },
+    // req.params._id,
+    cardId,
+    { $addToSet: { likes: userId } },
     { new: true },
   )
     .then((card) => {
@@ -50,9 +57,11 @@ const addLikeCard = (req, res, next) => {
 };
 
 const removeLikeCard = (req, res, next) => {
+  const cardId = mongoose.Types.ObjectId(req.params._id);
+  const userId = mongoose.Types.ObjectId(req.user._id);
   Card.findByIdAndUpdate(
-    req.params.id,
-    { $pull: { likes: req.user._id } },
+    cardId,
+    { $pull: { likes: userId } },
     { new: true },
   )
     .then((card) => {
