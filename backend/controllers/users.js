@@ -52,6 +52,7 @@ const getCurrentUser = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
+  console.log(req.body);
   const {
     name, about, avatar, email, password,
   } = req.body;

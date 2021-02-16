@@ -40,16 +40,15 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(cors({ origin: hosts }));
 
-app.use(auth);
 app.use(requestLogger);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/signin', login);
 app.post('/signup', createUser);
-
+app.post('/signin', login);
+app.use(auth);
 app.use('/users', auth, userRouter);
 app.use('/cards', auth, cardsRouter);
 
