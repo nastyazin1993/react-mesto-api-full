@@ -3,8 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 
 function Header({ loggedIn, email, signOut }) {
   const { pathname } = useLocation();
-  const linkText = `${pathname === "/sign-in" ? "Регистрация" : "Войти"}`;
-  const linkPath = `${pathname === "/sign-in" ? "/sign-up" : "/sign-in"}`;
+  const linkText = `${pathname === "/signin" ? "Регистрация" : "Войти"}`;
+  const linkPath = `${pathname === "/signin" ? "/signup" : "/signin"}`;
 
   return (
     <header className="header">

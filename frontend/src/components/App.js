@@ -160,7 +160,7 @@ function App() {
           iconStatus: okIcon,
           text: "Вы успешно зарегистрировались!",
         });
-        history.push("/sign-in")
+        history.push("/signin")
       })
       .catch((err) => {
         console.log(err);
@@ -203,7 +203,7 @@ function App() {
     setLoggedIn(false);
     localStorage.removeItem("jwt");
     setEmail("");
-    history.push("/sign-in");
+    history.push("/signin");
   }
 
   return (
@@ -213,10 +213,10 @@ function App() {
           <div className="page">
             <Header email={email} loggedIn={loggedIn} signOut={handleSignOut} />
             <Switch>
-              <Route path="/sign-up">
+              <Route path="/signup">
                 <Register onRegister={handleRegister} />
               </Route>
-              <Route path="/sign-in">
+              <Route path="/signin">
                 <Login onLogin={handleLogin} />
               </Route>
               <ProtectedRoute

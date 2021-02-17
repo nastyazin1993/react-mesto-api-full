@@ -1,8 +1,8 @@
 {
-  "name": "mesto-react",
+  "name": "mesto",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://nastyazin1993.github.io/mesto-react",
+  "homepage": "https://nastyagun1993.students.nomoredomains.work",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -19,7 +19,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "npm run build && scp -r ./dist/* nastyzin1993@130.193.38.169:/home/nastyagun1993/react-mesto-api-full/frontend" 
+    "deploy": "npm run build && scp -r ./build* nastyagun1993@84.252.129.146:/home/nastyagun1993/react-mesto-api-full/frontend" 
   },
   "eslintConfig": {
     "extends": "react-app"
