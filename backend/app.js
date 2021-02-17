@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
 const mongoose = require('mongoose');
 // const path = require('path');
 const bodyParser = require('body-parser');
@@ -15,14 +15,30 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
-const hosts = [
-  'http://localhost:3001',
+
+const allowedCors = [
   'http://localhost:3000',
   'https://nastyagun1993.students.nomoredomains.work',
   'https://api.nastyagun1993.students.nomoredomains.work',
   'https://www.nastyagun1993.students.nomoredomains.work',
   'https://www.api.nastyagun1993.students.nomoredomains.work',
 ];
+
+app.use((req, res, next) => {
+  const { origin } = req.headers; // Записываем в переменную origin соответствующий заголовок
+  if (allowedCors.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  next();
+});
+// const hosts = [
+//   'http://localhost:3001',
+//   'http://localhost:3000',
+//   'https://nastyagun1993.students.nomoredomains.work',
+//   'https://api.nastyagun1993.students.nomoredomains.work',
+//   'https://www.nastyagun1993.students.nomoredomains.work',
+//   'https://www.api.nastyagun1993.students.nomoredomains.work',
+// ];
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
@@ -38,7 +54,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   next();
 }); */
 
-app.use(cors({ origin: hosts }));
+// app.use(cors({ origin: hosts }));
 
 app.use(requestLogger);
 
