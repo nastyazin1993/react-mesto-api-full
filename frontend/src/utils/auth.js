@@ -8,7 +8,7 @@ export const register = (password, email) =>
     },
     body: JSON.stringify({ password, email }),
   }).then((res) => {
-    console.log(res)
+   
     if (res.ok) {
   
       return res.json();
@@ -34,7 +34,7 @@ export const authorize = (password, email) =>
       return Promise.reject(new Error(`Ошибка: ${res.status} ....`));
     })
     .then((data) => {
-      console.log(data)
+      
       localStorage.setItem('jwt', data.token);
       
       return data;
@@ -51,12 +51,12 @@ export const authorize = (password, email) =>
       }
     });*/
 
-export const getContent = (token) =>
+export const getContent = (jwt) =>
   fetch(`${BASE_URL}users/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      'authorization': `Bearer ${jwt}`,
     },
   })
     .then((res) => {

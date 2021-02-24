@@ -1,5 +1,9 @@
 # Проект Mesto фронтенд + бэкенд
 
+84.252.129.146
+https://nastyagun1993.students.nomoredomains.work
+https://api.nastyagun1993.students.nomoredomains.work
+
 ## Директории
 
 `/models` — схемы и модели создаваемых документов 

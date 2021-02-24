@@ -38,35 +38,70 @@ function App() {
     text: "Загрузка...",
   });
   
-
-  // Проверить токен
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    console.log(jwt)
-    if (jwt) {
-      auth
-        .getContent(jwt)
-        .then((res) => {
-          setLoggedIn(true);
-          setEmail(res.data.email);
-          history.push("/");
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [history]);
-
-  React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    console.log(jwt)
-    if (jwt) {
-    Promise.all([api.getUserInfo(jwt), api.getInitialCards(jwt)])
+    // const jwt = localStorage.getItem("jwt");
+    // console.log(jwt)
+    if (loggedIn) {
+    Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([res, data]) => {
+ 
+        // setLoggedIn(true);
+        // setEmail(res.email);
         setCurrentUser(res);
         setCards(data);
+        history.push("/");
       })
       .catch((err) => console.log(err));
     }
-  }, [history]);
+  }, [loggedIn]);
+
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    
+    if (!jwt) {
+      return
+    }
+    if (jwt){
+      auth
+      .getContent(jwt)
+      .then((res) => {
+        setLoggedIn(true);
+        setEmail(res.email);
+        history.push("/");
+      })
+      .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
+
+  
+  // // Проверить токен
+  // React.useEffect(() => {
+  //   const jwt = localStorage.getItem("jwt");
+  //   console.log(jwt)
+  //   if (jwt) {
+  //     api
+  //     .getUserInfo(jwt)
+  //     .then((res) => {
+  //       console.log(res)
+  //       setLoggedIn(true);
+  //       setEmail(res.email);
+  //       history.push("/");
+  //     })
+  //     .catch((err) => console.log(err));
+  //   }
+  //   //   auth
+  //   //     // .getContent(jwt)
+        
+  //   //     .then((res) => {
+  //   //       setLoggedIn(true);
+  //   //       setEmail(res.data.email);
+  //   //       history.push("/");
+  //   //     })
+  //   //     .catch((err) => console.log(err));
+  //   // }
+  // }, [history]);
+
+  
 
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -92,18 +127,24 @@ function App() {
     setSelectedCard(card);
     setImagePopupOpen(true);
   }
+
+
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
+    console.log(isLiked)
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
+        console.log(newCard)
         const newCards = cards.map((item) =>
-          item._id === card._id ? newCard : item
+          item._id === card._id ? newCard.data : item
         );
         setCards(newCards);
       })
       .catch((err) => console.log(err));
   }
+
+
   function handleCardDelete(card) {
     api
       .deleteCard(card._id)
@@ -113,29 +154,37 @@ function App() {
       })
       .catch((err) => console.log(err));
   }
+
+
+
   function handleUpdateUser(res) {
     api
       .patchUserInfo(res)
       .then((res) => {
-        setCurrentUser(res);
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
   }
+
+
   function handleUpdateAvatar(link) {
     api
       .patchUserAvatar(link)
-      .then((link) => {
-        setCurrentUser(link);
+      .then((res) => {
+        console.log(res)
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
   }
+
+
   function handleAddPlaceSubmit(card) {
     api
       .postCard(card)
       .then((card) => {
-        setCards([card, ...cards]);
+        setCards([ card.data, ...cards ]);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -155,7 +204,7 @@ function App() {
       .register(escape(password), email)
    
       .then((res) => { 
-        console.log(res)
+        
         setCodeStatusInfo({
           iconStatus: okIcon,
           text: "Вы успешно зарегистрировались!",
@@ -174,21 +223,31 @@ function App() {
 
   function handleLogin(password, email) {
     cleanCodeStatusInfo();
-
     auth
       .authorize(escape(password), email)
-      .then((data) => { localStorage.setItem("jwt", data.token)
-        auth
-          .getContent(data)
-          .then((res) => {
-            setEmail(res.data.email);
-          })
-          .catch((err) => console.log(err));
+      .then((data) => { 
+        localStorage.setItem("jwt", data.token)
+       
         setLoggedIn(true);
+        
         history.push("/");
         setInfoTooltipOpen(false);
       })
-
+  
+      // console.log(data)
+      //     // .getContent(data)
+      //     api.getUserInfo(data)
+      //     .then((res) => {
+      //       setEmail(res.email);
+      //     })
+      //     .catch((err) => console.log(err));
+        // auth
+        //   // .getContent(data)
+        //   .then((res) => {
+        //     setEmail(res.data.email);
+        //   })
+        //   .catch((err) => console.log(err));
+        
       .catch((err) => {
         console.log(err);
         setCodeStatusInfo({
@@ -196,15 +255,19 @@ function App() {
           text: "Что-то пошло не так! Попробуйте еще раз.",
         });
       });
-    setInfoTooltipOpen(true);
+        
+    
+      setInfoTooltipOpen(true);
   }
 
   function handleSignOut() {
     setLoggedIn(false);
     localStorage.removeItem("jwt");
-    setEmail("");
+    setEmail();
     history.push("/signin");
+    console.log(email)
   }
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
