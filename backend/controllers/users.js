@@ -5,6 +5,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const UnauthorizedError = require('../errors/unauthorized-err');
+const ConflictError = require('../errors/conflict-error');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -36,7 +37,6 @@ const getUser = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  console.log(req.user);
   const userId = mongoose.Types.ObjectId(req.user._id);
   User.findById(userId)
     .then((user) => {
@@ -60,9 +60,15 @@ const createUser = (req, res, next) => {
     }))
 
     .then((user) => {
-      if (!user) {
+      if (user.name === 'MongoError' && user.code === 11000) {
+        throw new ConflictError('Такой пользователь уже есть');
+      } else if (!user) {
         throw new BadRequestError('Переданы некорректные данные');
-      } res.send({
+      }
+      // if (!user) {
+      //   throw new BadRequestError('Переданы некорректные данные');
+      // }       }
+      res.send({
         // data: user,
         data: {
           name, about, avatar, email,
