@@ -5,7 +5,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const UnauthorizedError = require('../errors/unauthorized-err');
-const ConflictError = require('../errors/conflict-error');
+// const ConflictError = require('../errors/conflict-error');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -60,29 +60,29 @@ const createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
 
-    // .then((user) => {
-    //   if (!user) {
-    //     throw new BadRequestError('Переданы некорректные данные');
-    //   } res.send({
-    //     // data: user,
-    //     data: {
-    //       name, about, avatar, email,
-    //     },
-    //   });
-    // })
     .then((user) => {
-      console.log(user);
-      // if (!user) {
-      //   throw new BadRequestError('Переданы некорректные данные');
-      // } else
-      if (email === User.findOne({ email })) {
-        throw new ConflictError('Такой пользователь уже существует');
+      if (!user) {
+        throw new BadRequestError('Переданы некорректные данные');
       } res.send({
+        // data: user,
         data: {
           name, about, avatar, email,
         },
       });
     })
+    // .then((user) => {
+    //   console.log(user);
+    //   // if (!user) {
+    //   //   throw new BadRequestError('Переданы некорректные данные');
+    //   // } else
+    //   if (email === User.findOne({ email })) {
+    //     throw new ConflictError('Такой пользователь уже существует');
+    //   } res.send({
+    //     data: {
+    //       name, about, avatar, email,
+    //     },
+    //   });
+    // })
     .catch(next);
 };
 
