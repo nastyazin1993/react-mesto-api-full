@@ -60,23 +60,21 @@ const createUser = (req, res, next) => {
     }))
 
     .then((user) => {
-      console.log(user);
-      if (user.name === 'MongoError' && user.code === 11000) {
-        throw new ConflictError('Такой пользователь уже есть');
-      } else if (!user) {
+      if (!user) {
         throw new BadRequestError('Переданы некорректные данные');
       }
-      // if (!user) {
-      //   throw new BadRequestError('Переданы некорректные данные');
-      // }       }
       res.send({
-        // data: user,
         data: {
           name, about, avatar, email,
         },
       });
     })
-    .catch(next);
+    .catch((err) => {
+      console.log(err);
+      if (err.name === 'MongoError' && err.code === 11000) {
+        throw new ConflictError('Такой пользователь уже есть');
+      } else next(err);
+    });
 };
 
 const updateProfile = (req, res, next) => {
@@ -92,7 +90,6 @@ const updateProfile = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new BadRequestError('Переданы некорректные данные');
-        //  return;
       } res.send({ data: user });
     })
     .catch(next);
