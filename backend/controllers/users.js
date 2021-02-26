@@ -72,11 +72,12 @@ const createUser = (req, res, next) => {
     // })
     .then((user) => {
       console.log(user);
-      if (!user) {
-        throw new BadRequestError('Переданы некорректные данные');
-      } else if (user.email === User.findOne({ email })) {
+      // if (!user) {
+      //   throw new BadRequestError('Переданы некорректные данные');
+      // } else
+      if (email === User.findOne({ email })) {
         throw new ConflictError('Такой пользователь уже существует');
-      }res.send({
+      } res.send({
         data: {
           name, about, avatar, email,
         },
