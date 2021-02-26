@@ -234,20 +234,7 @@ function App() {
         setInfoTooltipOpen(false);
       })
   
-      // console.log(data)
-      //     // .getContent(data)
-      //     api.getUserInfo(data)
-      //     .then((res) => {
-      //       setEmail(res.email);
-      //     })
-      //     .catch((err) => console.log(err));
-        // auth
-        //   // .getContent(data)
-        //   .then((res) => {
-        //     setEmail(res.data.email);
-        //   })
-        //   .catch((err) => console.log(err));
-        
+          
       .catch((err) => {
         console.log(err);
         setCodeStatusInfo({

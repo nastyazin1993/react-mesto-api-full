@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Card = require('../models/card');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
-// const ForbiddenError = require('../errors/bad-request-err');
+const ForbiddenError = require('../errors/bad-request-err');
 
 const createCard = (req, res, next) => {
   const { _id } = req.user;
@@ -26,16 +26,17 @@ const getCards = (req, res, next) => {
 };
 
 const deleteCard = (req, res, next) => {
-  // const cardOwnerId = mongoose.Types.ObjectId(req.owner);
-  // const userId = mongoose.Types.ObjectId(req.user._id);
-  Card.findByIdAndRemove(req.params._id)
+  Card.findById(req.params._id)
     .then((card) => {
-      // if (cardOwnerId === userId) {
-      //   throw new ForbiddenError('Запрещено!Вы не являетесь владельцем карточки!');
-      // }
+      const userId = req.user._id;
+      const cardOwnerId = card.owner.toString();
+      if (cardOwnerId !== userId) {
+        throw new ForbiddenError('Запрещено!Вы не являетесь владельцем карточки!');
+      }
       if (!card) {
         throw new BadRequestError('Переданы некорректные данные');
       }
+      card.remove();
       res.send({ data: card });
     })
     .catch(next);
