@@ -60,6 +60,7 @@ const createUser = (req, res, next) => {
     }))
 
     .then((user) => {
+      console.log(user);
       if (user.name === 'MongoError' && user.code === 11000) {
         throw new ConflictError('Такой пользователь уже есть');
       } else if (!user) {
