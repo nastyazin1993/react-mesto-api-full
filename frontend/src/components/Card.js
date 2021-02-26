@@ -11,8 +11,7 @@ function Card({ onCardClick, card, onCardLike, onCardDelete }) {
 
   const isLiked = card.likes.some((item) => item === currentUser._id);
   
-  console.log(card)
-  console.log(card.likes)
+
   const cardLikeButtonClassName = (
     `${isLiked ? 'element__heart_active' : 'element__heart'}`
   );
