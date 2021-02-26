@@ -5,7 +5,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const UnauthorizedError = require('../errors/unauthorized-err');
-// const ConflictError = require('../errors/conflict-error');
+const ConflictError = require('../errors/conflict-error');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -55,6 +55,12 @@ const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
+  User.findOne({ email })
+    .then((user) => {
+      if (user) {
+        throw new ConflictError('Такой пользователь уже существует');
+      }
+    });
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
