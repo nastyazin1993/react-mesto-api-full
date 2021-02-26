@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Card = require('../models/card');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
-const ForbiddenError = require('../errors/bad-request-err');
+const ForbiddenError = require('../errors/forbiden-error');
 
 const createCard = (req, res, next) => {
   const { _id } = req.user;
