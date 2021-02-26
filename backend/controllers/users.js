@@ -55,27 +55,39 @@ const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-  User.findOne({ email })
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       if (user) {
         throw new ConflictError('Такой пользователь уже существует');
+      } else {
+        bcrypt.hash(password, 10)
+          .then((hash) => User.create({
+            name, about, avatar, email, password: hash,
+          }));
       }
-    });
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
-    }))
-
+    })
     .then((user) => {
       if (!user) {
         throw new BadRequestError('Переданы некорректные данные');
       } res.send({
-        // data: user,
         data: {
           name, about, avatar, email,
         },
       });
     })
+    // bcrypt.hash(password, 10)
+    // .then((hash) => User.create({
+    //   name, about, avatar, email, password: hash,
+    // }))
+    // .then((user) => {
+    //   if (!user) {
+    //     throw new BadRequestError('Переданы некорректные данные');
+    //   } res.send({
+    //     data: {
+    //       name, about, avatar, email,
+    //     },
+    //   });
+    // })
     // .then((user) => {
     //   console.log(user);
     //   // if (!user) {
