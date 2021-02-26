@@ -55,7 +55,7 @@ const createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
   } = req.body;
-  User.findOne(email)
+  User.findOne(req.user.email)
     .then((user) => {
       if (user) {
         throw new ConflictError('Такой пользователь уже существует');
