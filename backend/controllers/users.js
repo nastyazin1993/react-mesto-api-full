@@ -37,10 +37,8 @@ const getUser = (req, res, next) => {
 
 const getCurrentUser = (req, res, next) => {
   console.log(req.user);
-  // const { _id } = req.user;
   const userId = mongoose.Types.ObjectId(req.user._id);
   User.findById(userId)
-  // User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
@@ -64,8 +62,9 @@ const createUser = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new BadRequestError('Переданы некорректные данные');
-        //  return;
-      } res.send({ data: user });
+      } res.send({
+        name, about, avatar, email,
+      });
     })
     .catch(next);
 };
@@ -112,8 +111,6 @@ const login = (req, res, next) => {
   const { password, email } = req.body;
   return User.findUserByCredentials(password, email)
     .then((user) => {
-    // аутентификация успешна! пользователь в переменной user
-    // создадим токен
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
@@ -121,14 +118,9 @@ const login = (req, res, next) => {
       );
 
       // вернём токен
-      res.send({ token, user });
+      res.send({ token });
     })
-    .catch(/* (err) => { */ () => next(new UnauthorizedError('Введены неверное имя или пароль')));
-  // ошибка аутентификации
-  /* res
-        .status(401)
-        .send({ message: err.message });
-    }); */
+    .catch(() => next(new UnauthorizedError('Введены неверное имя или пароль')));
 };
 
 module.exports = {

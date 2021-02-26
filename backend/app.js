@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-// const path = require('path');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const userRouter = require('./routes/users');
@@ -11,26 +10,11 @@ const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/not-found-err');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-// const { validateUser } = require('./middlewares/validation');
+const { validateUser } = require('./middlewares/validation');
 
 const { PORT = 3000 } = process.env;
 const app = express();
 
-// const allowedCors = [
-//   'http://localhost:3000',
-//   'https://nastyagun1993.students.nomoredomains.work',
-//   'https://api.nastyagun1993.students.nomoredomains.work',
-//   'https://www.nastyagun1993.students.nomoredomains.work',
-//   'https://www.api.nastyagun1993.students.nomoredomains.work',
-// ];
-
-// app.use((req, res, next) => {
-//   const { origin } = req.headers; // Записываем в переменную origin соответствующий заголовок
-//   if (allowedCors.includes(origin)) {
-//     res.header('Access-Control-Allow-Origin', origin);
-//   }
-//   next();
-// });
 const hosts = [
   'http://localhost:3001',
   'http://localhost:3000',
@@ -47,20 +31,12 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useUnifiedTopology: true,
 });
 
-/* app.use((req, res, next) => {
-  req.user = {
-    _id: '5fccc570fe90523760e526bc',
-  };
-  next();
-}); */
-
 app.use(cors({ origin: hosts }));
 
 app.use(requestLogger);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -68,8 +44,8 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.post('/signup', validateUser, createUser);
+app.post('/signin', validateUser, login);
 app.use(auth);
 app.use('/users', auth, userRouter);
 app.use('/cards', auth, cardsRouter);
