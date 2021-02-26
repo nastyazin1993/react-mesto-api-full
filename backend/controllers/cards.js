@@ -30,11 +30,11 @@ const deleteCard = (req, res, next) => {
     .then((card) => {
       const userId = req.user._id;
       const cardOwnerId = card.owner.toString();
-      if (cardOwnerId !== userId) {
-        throw new ForbiddenError('Запрещено!Вы не являетесь владельцем карточки!');
-      }
       if (!card) {
         throw new BadRequestError('Переданы некорректные данные');
+      }
+      if (cardOwnerId !== userId) {
+        throw new ForbiddenError('Запрещено!Вы не являетесь владельцем карточки!');
       }
       card.remove();
       res.send({ data: card });
