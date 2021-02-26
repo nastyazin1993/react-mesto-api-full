@@ -37,6 +37,7 @@ const getUser = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
+  console.log(req.user);
   const userId = mongoose.Types.ObjectId(req.user._id);
   User.findById(userId)
     .then((user) => {
@@ -59,22 +60,29 @@ const createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
 
+    // .then((user) => {
+    //   if (!user) {
+    //     throw new BadRequestError('Переданы некорректные данные');
+    //   } res.send({
+    //     // data: user,
+    //     data: {
+    //       name, about, avatar, email,
+    //     },
+    //   });
+    // })
     .then((user) => {
+      console.log(user);
       if (!user) {
         throw new BadRequestError('Переданы некорректные данные');
-      }
-      res.send({
+      } else if (user.email === User.findOne({ email })) {
+        throw new ConflictError('Такой пользователь уже существует');
+      }res.send({
         data: {
           name, about, avatar, email,
         },
       });
     })
-    .catch((err) => {
-      console.log(err);
-      if (err.name === 'MongoError' && err.code === 11000) {
-        throw new ConflictError('Такой пользователь уже есть');
-      } else next(err);
-    });
+    .catch(next);
 };
 
 const updateProfile = (req, res, next) => {
@@ -90,6 +98,7 @@ const updateProfile = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new BadRequestError('Переданы некорректные данные');
+        //  return;
       } res.send({ data: user });
     })
     .catch(next);
