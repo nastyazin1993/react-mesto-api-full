@@ -28,11 +28,11 @@ const getCards = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   Card.findById(req.params._id)
     .then((card) => {
-      const userId = req.user._id;
-      const cardOwnerId = card.owner.toString();
       if (!card) {
         throw new BadRequestError('Переданы некорректные данные');
       }
+      const userId = req.user._id;
+      const cardOwnerId = card.owner.toString();
       if (cardOwnerId !== userId) {
         throw new ForbiddenError('Запрещено!Вы не являетесь владельцем карточки!');
       }
@@ -46,7 +46,6 @@ const addLikeCard = (req, res, next) => {
   const cardId = mongoose.Types.ObjectId(req.params._id);
   const userId = mongoose.Types.ObjectId(req.user._id);
   Card.findByIdAndUpdate(
-    // req.params._id,
     cardId,
     { $addToSet: { likes: userId } },
     { new: true },
