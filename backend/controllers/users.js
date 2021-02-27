@@ -11,7 +11,6 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUsers = (req, res, next) => {
   User.find()
-  /* .then((data) => res.send(data)) */
     .then((data) => {
       if (!data) {
         throw new NotFoundError('Запрашиваемый ресурс не найден');
@@ -22,14 +21,11 @@ const getUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  console.log(req.user);
   const Id = mongoose.Types.ObjectId(req.params._id);
-  // const { _id } = req.params;
   User.findById(Id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
-      //  return;
       }
       res.send(user);
     })
@@ -43,7 +39,6 @@ const getCurrentUser = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
-        //  return;
       }
       res.send(user);
     })
@@ -66,10 +61,6 @@ const createUser = (req, res, next) => {
           }));
       }
     })
-  // bcrypt.hash(password, 10)
-  //   .then((hash) => User.create({
-  //     name, about, avatar, email, password: hash,
-  //   }))
     .then((user) => {
       if (user) {
         throw new BadRequestError('Переданы некорректные данные');
@@ -79,33 +70,6 @@ const createUser = (req, res, next) => {
         },
       });
     })
-
-    // bcrypt.hash(password, 10)
-    // .then((hash) => User.create({
-    //   name, about, avatar, email, password: hash,
-    // }))
-    // .then((user) => {
-    //   if (!user) {
-    //     throw new BadRequestError('Переданы некорректные данные');
-    //   } res.send({
-    //     data: {
-    //       name, about, avatar, email,
-    //     },
-    //   });
-    // })
-    // .then((user) => {
-    //   console.log(user);
-    //   // if (!user) {
-    //   //   throw new BadRequestError('Переданы некорректные данные');
-    //   // } else
-    //   if (email === User.findOne({ email })) {
-    //     throw new ConflictError('Такой пользователь уже существует');
-    //   } res.send({
-    //     data: {
-    //       name, about, avatar, email,
-    //     },
-    //   });
-    // })
     .catch(next);
 };
 
@@ -122,7 +86,6 @@ const updateProfile = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new BadRequestError('Переданы некорректные данные');
-        //  return;
       } res.send({ data: user });
     })
     .catch(next);
@@ -141,7 +104,6 @@ const updateAvatar = (req, res, next) => {
     .then((user) => {
       if (!user) {
         throw new BadRequestError('Переданы некорректные данные');
-      //  return;
       } res.send({ data: user });
     })
     .catch(next);
