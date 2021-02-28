@@ -29,7 +29,7 @@ const deleteCard = (req, res, next) => {
   Card.findById(req.params._id)
     .then((card) => {
       if (!card) {
-        throw new BadRequestError('Переданы некорректные данные');
+        throw new NotFoundError('Нет карточки с таким id');
       }
       const userId = req.user._id;
       const cardOwnerId = card.owner.toString();
